@@ -6,9 +6,9 @@ $InformationPreference = 'Continue';
 
 <# Variables #>;
 $website = "API";
-$admin_password = "K0p1Cl0ud";
+$admin_password = "K0p1Cl0udAcc3$$";
 $apiusername = "KopiCloudSvc";
-$apipassword = "K0p1Cl0ud";
+$apipassword = "K0p1Cl0udAcc3$$";
 $codefolder = "C:\KopiCloud-AD-API";
 
 <# Set Temp Variable #>;
