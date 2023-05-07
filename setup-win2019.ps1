@@ -57,10 +57,10 @@ $acl.SetAccessRule($AccessRule2);
 $acl | Set-Acl -Path $codefolder;
 
 <# Download API Code #>;
-$Version = Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/KopiCloud-AD-API-Setup/Setup-Files/main/release.version';
+$Version = Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/KopiCloud-AD-API-Setup/Setup-Files/main/release.version' -UseBasicParsing;
 $Url = 'https://github.com/KopiCloud-AD-API-Setup/Setup-Files/releases/download/' + $Version.Content.Trim() + '/KopiCloud-AD-API.zip';
 $destination = "$env:TEMP\KopiCloud-AD-API.zip";
-Invoke-WebRequest -Uri $Url -OutFile $destination;
+Invoke-WebRequest -Uri $Url -OutFile $destination -UseBasicParsing;
 
 <# Decompress API Code #>;
 Expand-Archive -Path $destination -DestinationPath $codefolder -Force;
@@ -90,7 +90,7 @@ Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.a
 <# Download .NET Core 6 #>; 
 $source = "https://download.visualstudio.microsoft.com/download/pr/7ab0bc25-5b00-42c3-b7cc-bb8e08f05135/91528a790a28c1f0fe39845decf40e10/dotnet-hosting-6.0.16-win.exe";
 $destination = "$env:TEMP\net6.exe";
-Invoke-WebRequest -Uri $source -OutFile $destination;
+Invoke-WebRequest -Uri $source -OutFile $destination -UseBasicParsing;
 
 <# Install .NET Core 6 #>; 
 Start-Process -FilePath $destination -Args "/install /quiet /norestart" -Verb RunAs -Wait;
@@ -107,7 +107,7 @@ $api.AddSslCertificate($certThumbprint.Thumbprint, "My");
 <# Download Rewrite URL #>;
 $source = "https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi";
 $destination = "$env:TEMP\rewrite.msi";
-Invoke-WebRequest -Uri $source -OutFile $destination;
+Invoke-WebRequest -Uri $source -OutFile $destination -UseBasicParsing;
 
 <# Install RewriteURL #>;
 $MSIArguments = "/i $destination /quiet";
