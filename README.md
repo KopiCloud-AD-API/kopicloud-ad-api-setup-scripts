@@ -11,7 +11,7 @@ Scripts to setting up the KopiCloud AD API in our environment:
 
 - By default, the download and installation of **SQL Server Management Studio** is disabled because it will take lots of time.
 
-- The default Windows username is **Administrator**, and the password is **K0p1Cl0ud**. Update the **$admin_password** variable if you want to use a different password.
+- The default Windows username is **Administrator**, and the password is **K0p1Cl0udAcc3$$**. Update the **$admin_password** variable if you want to use a different password.
 
 ## How to Set Up KopiCloud AD API
 
