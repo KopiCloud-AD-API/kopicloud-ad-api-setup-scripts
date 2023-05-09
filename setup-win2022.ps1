@@ -87,8 +87,18 @@ Set-ItemProperty IIS:\AppPools\$website -Name processModel -Value @{username=$ap
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.applicationHost/sites/site[@name='$website']/application[@path='/']/virtualDirectory[@path='/']" -name "userName" -value $apiusername;
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.applicationHost/sites/site[@name='$website']/application[@path='/']/virtualDirectory[@path='/']" -name "password" -value $apipassword;
 
+<# Download Rewrite URL #>;
+$source = "https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi";
+$destination = "$env:TEMP\rewrite.msi";
+Invoke-WebRequest -Uri $source -OutFile $destination -UseBasicParsing;
+
+<# Install RewriteURL #>;
+$MSIArguments = "/i $destination /quiet";
+Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow;
 <# Download .NET Core 6 #>; 
-$source = "https://download.visualstudio.microsoft.com/download/pr/7ab0bc25-5b00-42c3-b7cc-bb8e08f05135/91528a790a28c1f0fe39845decf40e10/dotnet-hosting-6.0.16-win.exe";
+<# $source = "https://download.visualstudio.microsoft.com/download/pr/7ab0bc25-5b00-42c3-b7cc-bb8e08f05135/91528a790a28c1f0fe39845decf40e10/dotnet-hosting-6.0.16-win.exe"; #>; 
+$source = "https://download.visualstudio.microsoft.com/download/pr/e38901ef-e9ac-4331-a6aa-f2aec3b1754b/6d695fa51a4960393edaf725ce970a86/dotnet-hosting-6.0.15-win.exe";
+
 $destination = "$env:TEMP\net6.exe";
 Invoke-WebRequest -Uri $source -OutFile $destination -UseBasicParsing;
 
@@ -103,15 +113,6 @@ $certThumbprint = New-SelfSignedCertificate -DnsName $machine -CertStoreLocation
 New-WebBinding -Name $website -Protocol "https";
 $api = Get-WebBinding -Name $website;
 $api.AddSslCertificate($certThumbprint.Thumbprint, "My");
-
-<# Download Rewrite URL #>;
-$source = "https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi";
-$destination = "$env:TEMP\rewrite.msi";
-Invoke-WebRequest -Uri $source -OutFile $destination -UseBasicParsing;
-
-<# Install RewriteURL #>;
-$MSIArguments = "/i $destination /quiet";
-Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow;
 
 <# Create Rewrite URL Rule to Enforce HTTPS #>;
 $rulename = $website + ' http to https';
