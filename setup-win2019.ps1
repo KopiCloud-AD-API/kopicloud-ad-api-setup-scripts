@@ -195,3 +195,4 @@ $configfolder = "C:\KopiCloud-AD-API-Config";
 if (!(test-path $configfolder)) { New-Item -Path $configfolder -ItemType Directory };
 $URL = "https://github.com/KopiCloud-AD-API-Setup/launch-config/releases/download/v1.0.0/LaunchConfig.exe";
 Invoke-WebRequest $URL -OutFile ($configfolder + "\LaunchConfig.exe") -UseBasicParsing;
+
